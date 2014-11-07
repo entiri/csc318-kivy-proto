@@ -1,0 +1,135 @@
+<MainMenu>
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+
+            Button:
+                text: 'previous'
+                on_press:
+                    manager.current = manager.previous()
+
+            Button:
+                text: 'Transcripts'
+                on_press:
+                    manager.current = 'Transcripts'
+
+            Button:
+                text: 'View Notes'
+                on_press:
+                    manager.current = 'Settings'
+         
+        ScreenManager:
+            id: manager
+     
+            Screen:
+                name: 'Main'
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    padding: 20
+             
+                    Button:
+                        padding: (20, 10)
+                        text: 'Record'
+                        on_press:
+                            manager.current = 'Transcripts'
+                    
+                    Button:
+                        padding: (20, 10)
+                        text: 'Translate Text'
+                        on_press:
+                            manager.current = 'Settings'
+     
+            Screen:
+                name: 'Translate'
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    TextInput:
+                        text: app.data
+                        on_text: app.data = self.text
+
+                    Button:
+                        text: 'Search'
+                        on_press:
+                            manager.current = 'Results'
+
+                    Button:
+                        text: 'Translate'
+                        on_release:
+                            manager.current = 'Record'
+     
+            Screen:
+                name: 'Results'
+
+                BoxLayout:
+                    
+                    orientation: 'vertical'
+
+                    Label:
+                        text: root.app.results(app.data)
+                        h_align: 'center'
+                        text_size: self.width, None
+                        size_hint_y: None
+                        top: root.top - 150
+
+                    Button:
+                        text: 'Another Search'
+                        on_press:
+                            manager.current = 'Main'
+
+            Screen:
+                name: 'Record'
+                
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    Label:
+                        text: 'Unfortunately, this feature is not yet available'
+                        font_size: 15
+                        top: root.top - 50
+
+                    Button:
+                        text: 'Try the translate tool instead!'
+                        halign: 'center'
+                        size: 150, 50
+                        on_press:
+                            manager.current = 'Translate'
+
+            Screen:
+                name: 'Transcripts'
+                
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    Label:
+                        text: app.searchHistory
+                        font_size: 15
+                        top: root.top - 50
+
+                    Button:
+                        text: 'Back to main search.'
+                        halign: 'center'
+                        size: 150, 50
+                        on_press:
+                            manager.current = 'Main'
+
+            Screen:
+                name: 'Transcripts'
+                
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    Label:
+                        text: app.searchHistory
+                        font_size: 15
+                        top: root.top - 50
+
+                    Button:
+                        text: 'Back to main search.'
+                        halign: 'center'
+                        size: 150, 50
+                        on_press:
+                            manager.current = 'Main'
