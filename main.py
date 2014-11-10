@@ -2,6 +2,9 @@ import os
 import kivy
 from kivy.app import App
 from kivy.uix.label import Label
+from kivy.uix.checkbox import CheckBox
+from kivy.uix.tabbedpanel import TabbedPanel
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.floatlayout import FloatLayout
@@ -14,31 +17,18 @@ class AppScreen(FloatLayout):
 class MainMenu(AppScreen):
     pass
 
-class TranslateScreen(AppScreen):
-    pass
-
-class RecordScreen(AppScreen):
-    pass
-
-class ResultsScreen(AppScreen):
-    pass
-
-class NotAvailableScreen(AppScreen):
+class SettingScreen(TabbedPanel):
     pass
 
 class CSCGroupNineApp(App):
     data = StringProperty('')
     searchHistory = StringProperty('')
+    ignoreList = []
     
     
     def build(self):
         self.screens = {}
-        self.screens["translate"] = TranslateScreen(app=self)
-        self.screens["record"] = RecordScreen(app=self)
-        self.screens["results"] = ResultsScreen(app=self)
-        self.screens["notavailable"] = NotAvailableScreen(app=self)
-        #self.screens["options"] = OptionsScreen(app=self)
-        #self.screens["information"] = InformationScreen(app=self)
+        self.screens["settings"] = SettingScreen(app=self)
         self.screens["menu"] = MainMenu(app=self)
         self.root = FloatLayout()
         self.goto_screen("menu")
@@ -53,12 +43,16 @@ class CSCGroupNineApp(App):
         Return a list of all search results for index in fle
         '''
         
+        #Assume the text is all lowercase words, change the first letter
+        # of each word to upper case (change to title case)
+        query = query.title()
+        
         #Troubleshoot - for various errors
         if len(query) <= 1:
             return "Sorry, your search has to be longer than a few words!"
 
         #open file
-        fle = open('C:/Users/USER/My Documents/GitHub/csc318-kivy/idioms.txt',\
+        fle = open('C:/Users/USER/My Documents/GitHub/csc318-kivy-proto/idioms.txt',\
                    'r')
         
         queryRslt = []
@@ -103,6 +97,29 @@ class CSCGroupNineApp(App):
                 response += i[1] + "\n\n"
             #self.searchHistory.append(response)
             return response
+    
+    def addToIgnore(self, obj):
+        '''
+        Add obj to list of objects to ignore in future searches.
+        '''
+        if obj not in self.ignoreList:
+            self.ignoreList.append(obj)
+
+    def removeFromIgnore(self, obj):
+        '''
+        Remove obj from list of ignored searches
+        '''
+        if obj in self.ignoreList:
+            self.ignoreList.remove(obj)
+
+    def showIgnore(self, lst):
+        '''
+        Show list of ignored items
+        '''
+        items = ""
+        for i in lst:
+            items += i + "\n\n"
+        return items
 
 if __name__ == '__main__':
     CSCGroupNineApp().run()

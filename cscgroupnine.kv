@@ -16,72 +16,75 @@
                     manager.current = 'Transcripts'
 
             Button:
-                text: 'View Notes'
+                text: 'Settings'
                 on_press:
-                    manager.current = 'Settings'
+                    root.app.goto_screen("settings")
          
         ScreenManager:
             id: manager
-     
+
             Screen:
                 name: 'Main'
-                BoxLayout:
-                    orientation: 'vertical'
-
-                    padding: 20
-             
-                    Button:
-                        padding: (20, 10)
-                        text: 'Record'
-                        on_press:
-                            manager.current = 'Transcripts'
-                    
-                    Button:
-                        padding: (20, 10)
-                        text: 'Translate Text'
-                        on_press:
-                            manager.current = 'Settings'
-     
-            Screen:
-                name: 'Translate'
-                BoxLayout:
+                FloatLayout:
                     orientation: 'vertical'
 
                     TextInput:
                         text: app.data
+                        multiline: False
+                        size_hint: .90, .15
+                        pos: 20, root.top - 150
                         on_text: app.data = self.text
 
                     Button:
                         text: 'Search'
+                        size_hint: .25, .10
+                        pos: root.width * 3 / 5, root.top * 6 / 10
                         on_press:
-                            manager.current = 'Results'
+                            manager.current = 'Search'
 
                     Button:
-                        text: 'Translate'
+                        text: 'Record'
+                        size_hint: .40, .40
+                        pos: root.width * 0.3, root.top * 1 / 10
                         on_release:
-                            manager.current = 'Record'
+                            manager.current = 'Listen'
      
             Screen:
-                name: 'Results'
+                name: 'Search'
 
-                BoxLayout:
+                FloatLayout:
                     
                     orientation: 'vertical'
+
+                    TextInput:
+                        text: app.data
+                        multiline: False
+                        size_hint: .90, .15
+                        pos: 20, root.top - 150
+                        on_text: app.data = self.text
+
+                    Button:
+                        text: 'Search'
+                        size_hint: .25, .10
+                        pos: root.width * 3 / 5, root.top * 6 / 10
+                        on_press:
+                            manager.current = 'Search'
 
                     Label:
                         text: root.app.results(app.data)
                         h_align: 'center'
                         text_size: self.width, None
-                        size_hint_y: None
-                        top: root.top - 150
+                        pos: root.width * 0.1, root.top - 300
 
                     Button:
                         text: 'Another Search'
+                        size_hint: 0.1, 0.1
+                        pos: root.width * 0.4, root.top * 0.1
                         on_press:
                             manager.current = 'Main'
 
             Screen:
-                name: 'Record'
+                name: 'Listen'
                 
                 BoxLayout:
                     orientation: 'vertical'
@@ -96,24 +99,6 @@
                         halign: 'center'
                         size: 150, 50
                         on_press:
-                            manager.current = 'Translate'
-
-            Screen:
-                name: 'Transcripts'
-                
-                BoxLayout:
-                    orientation: 'vertical'
-
-                    Label:
-                        text: app.searchHistory
-                        font_size: 15
-                        top: root.top - 50
-
-                    Button:
-                        text: 'Back to main search.'
-                        halign: 'center'
-                        size: 150, 50
-                        on_press:
                             manager.current = 'Main'
 
             Screen:
@@ -133,3 +118,28 @@
                         size: 150, 50
                         on_press:
                             manager.current = 'Main'
+
+
+<SettingScreen>
+    do_default_tab: False
+
+    Button:
+        text: 'Back'
+        on_press:
+            root.app.goto_screen("main")
+
+    TabbedPanelItem:
+        text: 'Packets'
+        BoxLayout:
+            Label:
+                text: 'First tab content area'
+            Button:
+                text: 'Go back'
+
+    TabbedPanelItem:
+        text: 'Ignored'
+        BoxLayout:
+            Label:
+                text: 'Second tab content area'
+            Button:
+                text: 'Go back'
