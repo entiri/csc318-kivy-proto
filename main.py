@@ -9,7 +9,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty, StringProperty, \
-     NumericProperty
+     NumericProperty, ListProperty
 
 class AppScreen(FloatLayout):
     app = ObjectProperty(None)
@@ -18,14 +18,19 @@ class MainMenu(AppScreen):
     pass
 
 class SettingScreen(TabbedPanel):
-    pass
+    app = ObjectProperty(None)
+    
+    def back_to_main(self):
+        '''
+        Direct the user back to the main page
+        '''
+        self.app.goto_screen("menu")
 
 class CSCGroupNineApp(App):
     data = StringProperty('')
     searchHistory = StringProperty('')
-    ignoreList = []
-    
-    
+    ignoreList = ListProperty([])
+
     def build(self):
         self.screens = {}
         self.screens["settings"] = SettingScreen(app=self)

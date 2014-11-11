@@ -6,12 +6,12 @@
             height: 50
 
             Button:
-                text: 'previous'
+                text: 'Back'
                 on_press:
                     manager.current = manager.previous()
 
             Button:
-                text: 'Transcripts'
+                text: 'History'
                 on_press:
                     manager.current = 'Transcripts'
 
@@ -64,11 +64,11 @@
                         on_text: app.data = self.text
 
                     Button:
-                        text: 'Search'
+                        text: 'Ignore'
                         size_hint: .25, .10
                         pos: root.width * 3 / 5, root.top * 6 / 10
                         on_press:
-                            manager.current = 'Search'
+                            root.app.addToIgnore(app.data)
 
                     Label:
                         text: root.app.results(app.data)
@@ -126,7 +126,7 @@
     Button:
         text: 'Back'
         on_press:
-            root.app.goto_screen("main")
+            root.back_to_main()
 
     TabbedPanelItem:
         text: 'Packets'
@@ -135,11 +135,16 @@
                 text: 'First tab content area'
             Button:
                 text: 'Go back'
+                on_press: root.back_to_main()
 
     TabbedPanelItem:
         text: 'Ignored'
         BoxLayout:
+            orientation: 'vertical'
+
             Label:
-                text: 'Second tab content area'
+                text: root.app.showIgnore(app.ignoreList)
+
             Button:
-                text: 'Go back'
+                text: 'Back to Main'
+                on_press: root.back_to_main()
