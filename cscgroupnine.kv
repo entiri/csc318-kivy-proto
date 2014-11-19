@@ -17,6 +17,11 @@
                     manager.current = 'History'
 
             Button:
+                text: 'Favorites'
+                on_press:
+                    manager.current = 'Favorites'
+
+            Button:
                 text: 'Settings'
                 on_press:
                     root.app.goto_screen("settings")
@@ -40,6 +45,7 @@
                         text: 'Search'
                         size_hint: .25, .10
                         pos: root.width * 3 / 5, root.top * 6 / 10
+                        background_color: (0.0, 1.0, 1.0, 1.0)
                         on_press:
                             root.app.results(app.data)
                             manager.current = 'Search'
@@ -48,6 +54,7 @@
                         text: 'Record'
                         size_hint: .40, .40
                         pos: root.width * 0.3, root.top * 1 / 10
+                        background_color: (1.0, 0.0, 0.0, 1.0)
                         on_release:
                             manager.current = 'Listen'
 
@@ -67,11 +74,12 @@
                         on_text: app.data = self.text
 
                     Button:
-                        text: 'Ignore'
+                        text: 'Another Search'
                         size_hint: .25, .10
                         pos: root.width * 3 / 5, root.top * 6 / 10
                         on_press:
-                            root.app.addToIgnore(app.data)
+                            root.app.results(app.data)
+                            manager.current = 'Search'
 
                     Button:
                         text: 'Another Search'
@@ -80,22 +88,24 @@
                         on_press:
                             manager.current = 'Main'
 
-            Screen:
-                id: definition
-                name: 'Definition'
-
-                FloatLayout:
-
-                    Button:
-                        text: 'Back to similar results'
-                        size_hint: 0.25, 0.10
-                        pos: root.width * 0.4, root.top * 0.1
-                        on_press:
-                            manager.current = manager.previous()
 
             Screen:
                 id: history
                 name: 'History'
+                
+                FloatLayout:
+                    orientation: 'vertical'
+
+                    Button:
+                        text: 'Back to Main'
+                        size_hint: 0.25, 0.10
+                        pos: root.width * 0.4, root.top * 0.1
+                        on_press:
+                            manager.current = 'Main'
+
+            Screen:
+                id: favorite
+                name: 'Favorites'
                 
                 FloatLayout:
                     orientation: 'vertical'
@@ -122,6 +132,7 @@
                         text: 'Try the translate tool instead!'
                         halign: 'center'
                         size: 150, 50
+                        background_color: (1.0, 0.0, 0.0, 1.0)
                         on_press:
                             manager.current = 'Main'
 
